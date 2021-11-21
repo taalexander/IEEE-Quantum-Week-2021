@@ -50,16 +50,19 @@ def run_openqasm3(circuits: Union[QASM3_INPUT, List[QASM3_INPUT]], backend: IBMQ
 
     runtime_params = {
         'circuits': circuits,
+        'exporter_config': {
+            "disable_constants": True
+        }
     }
 
     options = {'backend_name': backend.name()}
 
     job = provider.runtime.run(
-        program_id="circuit-runner-qasm3",
+        program_id="qasm3-runner",
         options=options,
         inputs=runtime_params,
-        image="qiskit-program-qasm3:latest",
         result_decoder=RunnerResult,
+        image="qiskit-program-qasm3:latest"
     )
     if verbose:
         print(f"Running: {job.job_id()}")
